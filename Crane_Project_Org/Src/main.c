@@ -1,0 +1,9 @@
+#include "RCC.h"
+#include <stdint.h>
+
+int main(void)
+{
+
+    /* Loop forever */
+	for(;;);
+}

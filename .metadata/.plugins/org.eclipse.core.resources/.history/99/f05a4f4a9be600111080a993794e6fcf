@@ -1,0 +1,140 @@
+#ifndef INC_STM32F407XX_H_
+#define  INC_STM32F407XX_H_
+
+#include <stdint.h>
+#include <string.h>
+#include <stddef.h>
+
+/*
+ * Microprocessor Defines
+ */
+
+#define __IO volatile
+#define SET_BIT(REG,BIT)			((REG) |= (BIT))
+#define CLEAR_BIT(REG,BIT)			((REG) &= ~(BIT))
+#define READ_BIT(REG,BIT)			((REG) &  (BIT))
+#define UNUSED(x)					(void)(x)
+
+
+typedef enum
+{
+	DISABLE = 0x0U,
+	ENABLE = !DISABLE
+}Functional_State_t;
+typedef enum
+{
+	FLAG_RESET = 0x0U,
+	FLAG_SET = !FLAG_RESET
+}Flag_Status_t;
+
+
+/*
+ * Memory Base Addresses
+ */
+//UL -> 'UNSIGNED LONG' demektir.
+//SRAM2'yi bulmak icin SRAM1'in baslangicindan 112KB(112*1024 Bayt) ilerleyince SRAM2'nin baslangic adresi bulunur.
+#define FLASH_BASE_ADDR				(0x08000000UL)						/* Flash Base Address (up to 1MB)   	*/
+#define SRAM2_BASE_ADDR				(0x2001C000UL)						/* SRAM2 Base Address (up to 16KB)  	*/
+#define SRAM1_BASE_ADDR				(0x20000000UL)						/* SRAM1 Base Address (up to 112KB) 	*/
+
+/*
+ * Memory and Bus Addresses
+ */
+#define PERIPH_BASE_ADDR			(0x40000000UL)						/* All peripherals start this address 	*/
+
+#define APB1_BASE_ADDR				(PERIPH_BASE_ADDR + 0x00000UL)		/* APB1 Base Address -- 0x4000 0000		*/
+#define APB2_BASE_ADDR				(PERIPH_BASE_ADDR + 0x10000UL)		/* APB2 Base Address -- 0x4001 0000		*/
+#define AHB1_BASE_ADDR				(PERIPH_BASE_ADDR + 0x20000UL)		/* AHB1 Base Address -- 0x4002 0000     */
+
+/*
+ * Peripherals Addresses
+ */
+//AHB1 BUS
+#define GPIOA_BASE_ADDR				(AHB1_BASE_ADDR + 0x0000UL)			/* GPIO A Base Address 					*/
+#define GPIOD_BASE_ADDR				(AHB1_BASE_ADDR + 0x0C00UL)			/* GPIO D Base Address 					*/
+#define RCC_BASE_ADDR				(AHB1_BASE_ADDR + 0x3800UL)			/* RCC    Base Address 					*/
+
+//APB1 BUS
+#define TIM3_BASE_ADDR				(APB1_BASE_ADDR + 0x0400UL)			/* TIM 3  Base Address 					*/
+#define TIM6_BASE_ADDR				(APB1_BASE_ADDR + 0x1000UL)			/* TIM 6  Base Address 					*/
+
+//APB2 BUS
+#define ADC1_BASE_ADDR				(APB2_BASE_ADDR + 0x2000UL)			/* ADC 1  Base Address					*/
+#define ADC_COMMON_BASE_ADDR		(APB2_BASE_ADDR + 0x2300UL)			/* ADC Common Base Address 				*/
+
+
+/*
+ *	Peripheral Structure Definitions
+ */
+typedef struct
+{
+	__IO uint32_t CR;								/* RCC clock control register        		 				   Address offset : 0x00 	  */
+	__IO uint32_t PLLCFGR;							/* RCC PLL configuration register    		 				   Address offset : 0x04 	  */
+	__IO uint32_t CFGR;								/* RCC clock configuration register   		 				   Address offset : 0x08 	  */
+	__IO uint32_t CIR;								/* RCC clock interrupt register       		 				   Address offset : 0x0C 	  */
+	__IO uint32_t AHB1RSTR;							/* RCC AHB1 peripheral reset register 		 				   Address offset : 0x10 	  */
+	__IO uint32_t AHB2RSTR;							/* RCC AHB2 peripheral reset register 		 				   Address offset : 0x14 	  */
+	__IO uint32_t AHB3RSTR;							/* RCC AHB2 peripheral reset register 		 				   Address offset : 0x18	  */
+	__IO uint32_t RESERVED;							/* Reserved register 				  		 				   Address offset : 0x1C 	  */
+	__IO uint32_t APB1RSTR;							/* RCC APB1 peripheral reset register 		 				   Address offset : 0x20 	  */
+	__IO uint32_t APB2RSTR;							/* RCC APB2 peripheral reset register 		 				   Address offset : 0x24 	  */
+	__IO uint32_t RESERVED2[2];						/* Reserved register 				  		 				   Address offset : 0x28-0x2C */
+	__IO uint32_t AHB1ENR;							/* RCC AHB1 peripheral clock register 		 				   Address offset : 0x30      */
+	__IO uint32_t AHB2ENR;							/* RCC AHB2 peripheral clock register 		 				   Address offset : 0x34	  */
+	__IO uint32_t AHB3ENR;							/* RCC AHB3 peripheral clock register 		 				   Address offset : 0x38	  */
+	__IO uint32_t RESERVED3;						/* Reserved register 				  		 				   Address offset : 0x3C      */
+	__IO uint32_t APB1ENR;							/* RCC APB1 peripheral clock enable register 				   Address offset : 0x40 	  */
+	__IO uint32_t APB2ENR;							/* RCC APB2 peripheral clock enable register 				   Address offset : 0x44 	  */
+	__IO uint32_t RESERVED4[2];						/* Reserved register 				  		 				   Address offset : 0x48-0x4C */
+	__IO uint32_t AHB1LPENR;						/* RCC AHB1 peripheral clock enable in low power mode register Address offset : 0x50	  */
+	__IO uint32_t AHB2LPENR;						/* RCC AHB2 peripheral clock enable in low power mode register Address offset : 0x54	  */
+	__IO uint32_t AHB3LPENR;						/* RCC AHB3 peripheral clock enable in low power mode register Address offset : 0x58	  */
+	__IO uint32_t RESERVED5;						/* Reserved register 				  		 				   Address offset : 0x5C	  */
+	__IO uint32_t APB1LPENR;						/* RCC APB1 peripheral clock enable in low power mode register Address offset : 0x60	  */
+	__IO uint32_t APB2LPENR;						/* RCC APB2 peripheral clock enable in low power mode register Address offset : 0x64	  */
+	__IO uint32_t RESERVED6[2];						/* Reserved register 				  		 				   Address offset : 0x68-0x6C */
+	__IO uint32_t BDCR;								/* RCC Backup domain control register 						   Address offset : 0x70	  */
+	__IO uint32_t CSR;								/* RCC clock control & status register						   Address offset : 0x74	  */
+	__IO uint32_t RESERVED7[2];						/* Reserved register 				  		 				   Address offset : 0x78-0x7C */
+	__IO uint32_t SSCGR;							/* RCC spread spectrum clock generation register			   Address offset : 0x80	  */
+	__IO uint32_t PLLI2SCFGR;						/* RCC PLLI2S configuration register						   Address offset : 0x84	  */
+	__IO uint32_t PLLSAICFGR;						/* RCC PLL configuration register							   Address offset : 0x88	  */
+	__IO uint32_t DCKCFGR;							/* RCC Dedicated Clock Configuration Register				   Address offset : 0x8C	  */
+
+}RCC_TypeDef_t;
+
+/*
+ * RCC Macro Define
+ */
+#define RCC							((RCC_TypeDef_t *)(RCC_BASE_ADDR))
+
+/*
+ * RCC _Pos, _Msk and Macros
+ */
+//AHB1 BUS
+#define RCC_AHB1ENR_GPIOAEN_POS			(0U)								/* RCC AHB1ENR register GPIOAEN Bit Position */
+#define RCC_AHB1ENR_GPIOAEN_MSK			(0x1U << RCC_AHB1ENR_GPIOAEN_POS)	/* RCC AHB1ENR register GPIOAEN Bit Mask     */
+#define RCC_AHB1ENR_GPIOAEN				(RCC_AHB1ENR_GPIOAEN_MSK)			/* RCC AHB1ENR register GPIOAEN Bit Macro    */
+
+#define RCC_AHB1ENR_GPIODEN_POS			(3U)								/* RCC AHB1ENR register GPIODEN Bit Position */
+#define RCC_AHB1ENR_GPIODEN_MSK			(0x1U << RCC_AHB1ENR_GPIODEN_POS)	/* RCC AHB1ENR register GPIODEN Bit Mask     */
+#define RCC_AHB1ENR_GPIODEN				(RCC_AHB1ENR_GPIODEN_MSK)			/* RCC AHB1ENR register GPIODEN Macro		 */
+
+//APB1 BUS
+#define RCC_APB1ENR_TIM3EN_POS			(1U)								/* RCC APB1ENR register TIM3EN Bit Position	 */
+#define RCC_APB1ENR_TIM3EN_MSK			(0x1U << RCC_APB1ENR_TIM3EN_POS)	/* RCC APB1ENR register TIM3EN Bit Msk		 */
+#define RCC_APB1ENR_TIM3EN				(RCC_APB1ENR_TIM3EN_MSK)			/* RCC APB1ENR register TIM3EN Bit Macro	 */
+
+#define RCC_APB1ENR_TIM6EN_POS			(4U)								/* RCC APB1ENR register TIM6EN Bit Position	 */
+#define RCC_APB1ENR_TIM6EN_MSK			(0x1U << RCC_APB1ENR_TIM6EN_POS)	/* RCC APB1ENR register TIM6EN Bit Msk	 	 */
+#define RCC_APB1ENR_TIM6EN				(RCC_APB1ENR_TIM6EN_MSK)			/* RCC APB1ENR register TIM6EN Bit Macro	 */
+
+//APB2 BUS
+#define RCC_APB2ENR_ADC1EN_POS			(8U)								/* RCC APB2ENR register ADC1EN Bit Position  */
+#define RCC_APB2ENR_ADC1EN_MSK			(0x1U << RCC_APB2ENR_ADC1EN_POS)	/* RCC APB2ENR register ADC1EN Bit Mask	     */
+#define RCC_APB2ENR_ADC1EN				(RCC_APB2ENR_ADC1EN_MSK)			/* RCC APB2ENR register ADC1EN Bit Macro     */
+
+
+#include "RCC.h"
+
+#endif /* INC_STM32F407XX_H_*/

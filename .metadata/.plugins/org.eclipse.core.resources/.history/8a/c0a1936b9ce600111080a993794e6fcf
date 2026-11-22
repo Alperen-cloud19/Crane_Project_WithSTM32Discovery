@@ -1,0 +1,47 @@
+#ifndef INC_RCC_H_
+#define INC_RCC_H_
+
+#include "stm32f407xx.h"
+
+
+/*
+ * Enable Macros for RCC
+ */
+#define RCC_GPIOA_CLOCK_ENABLE()			do{	uint32_t tempValue = 0;	\
+												SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);		\
+												tempValue = READ_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);	\
+												UNUSED(templeReg);		\
+											}while(0)
+#define RCC_GPIOD_CLOCK_ENABLE()			do{	uint32_t tempValue = 0;	\
+												SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);		\
+												tempValue = READ_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);	\
+												UNUSED(templeReg);		\
+											}while(0)
+#define RCC_TIM3_CLOCK_ENABLE()				do{	uint32_t tempValue = 0;	\
+												SET_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM3EN);		\
+												tempValue = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM3EN);	\
+												UNUSED(templeReg);		\
+											}while(0)
+#define RCC_TIM6_CLOCK_ENABLE()				do{	uint32_t tempValue = 0;	\
+												SET_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM6EN);		\
+												tempValue = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM6EN);	\
+												UNUSED(templeReg);		\
+											}while(0)
+#define RCC_ADC1_CLOCK_ENABLE()				do{	uint32_t tempValue = 0;	\
+												SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);		\
+												tempValue = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);	\
+												UNUSED(templeReg);		\
+											}while(0)
+
+/*
+ * Disable Macros for RCC
+ */
+#define RCC_GPIOA_CLOCK_DISABLE()			CLEAR_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
+#define RCC_GPIOD_CLOCK_DISABLE()			CLEAR_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);
+#define RCC_TIM3_CLOCK_DISABLE()			CLEAR_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM3EN);
+#define RCC_TIM6_CLOCK_DISABLE()			CLEAR_BIT(RCC->APB1ENR, RCC_APB1ENR_TIM6EN);
+#define RCC_ADC1_CLOCK_DISABLE()			CLEAR_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
+
+
+
+#endif /* INC_RCC_H_ */
