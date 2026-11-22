@@ -1,0 +1,31 @@
+#ifndef INC_STM32F407XX_H_
+#define  INC_STM32F407XX_H_
+
+#include <stdint.h>
+#include <string.h>
+#include <stddef.h>
+
+/*
+ * Microprocessor Defines
+ */
+
+#define __IO volatile
+#define SET_BIT(REG,BIT)			((REG) |= (BIT))
+#define CLEAR_BIT(REG,BIT)			((REG) &= ~(BIT))
+#define READ_BIT(REG,BIT)			((REG) &  (BIT))
+#define UNUSED(x)					(void)x
+
+
+typedef enum
+{
+	DISABLE = 0x0U,
+	ENABLE = !DISABLE
+}Functional_State_t;
+typedef enum
+{
+	FLAG_RESET = 0x0U,
+	FLAG_SET = !FLAG_RESET
+}Flag_Status_t;
+
+
+#endif /* INC_STM32F407XX_H_*/
